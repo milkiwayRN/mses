@@ -25,7 +25,7 @@ trash = 0;
 for i = 1:size(D,1)
     for j = 1:size(D,2)
         if D(i,j) ~=0
-            [shortestPath,trash] = Find_best_road( i,j,E,A,C,func,D(i,j),[i],zeros(size(E,1)) );
+            [shortestPath,trash] = Finc_best_road( i,j,E,A,C,func,D(i,j),zeros(size(E,1)) );
             for z = 1:(length(shortestPath)-1)
                 T(shortestPath(z),shortestPath(z + 1)) = T(shortestPath(z),shortestPath(z + 1)) + D(i,j);
             end
@@ -43,7 +43,7 @@ while (epsilon > 1) && (iteration < 10)
     for i = 1:size(D,1)%составляем кратчайшие пути во взвешенном графе
         for j = 1:size(D,2)
             if D(i,j) ~=0
-                [shortestPath,trash] = Find_best_road( i,j,E,A,C,func,D(i,j),[i],T );
+                [shortestPath,trash] = Finc_best_road( i,j,E,A,C,func,D(i,j),T );
                 for z = 1:(length(shortestPath)-1)
                     Y(shortestPath(z),shortestPath(z + 1)) = Y(shortestPath(z),shortestPath(z + 1)) + D(i,j);
                 end
