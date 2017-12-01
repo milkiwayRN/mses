@@ -44,11 +44,13 @@ else
             W(L, i) = D(i, 1);
         end
     end
+    
     if d == s
         L = [1];
     else
         L = [d];
     end
+    
     e = W(size(W, 1), d);
     L = listdijkstra(L, W, s, d);
 end

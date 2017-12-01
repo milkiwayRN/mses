@@ -1,10 +1,7 @@
 %--------traffic assignment----------
 clear all;
 
-syms x;
-syms a; 
-syms c; 
-syms alpha;
+syms x a c alpha;
 
 func(x, a, c) = a + (x / c)^4;
 A = [0, 0, 2, 3;
@@ -31,7 +28,7 @@ trash = 0;
 for i = 1 : size(D, 1)
     for j = 1 : size(D, 2)
         if D(i, j) ~=0
-            [shortestPath, trash] = Finc_best_road(i, j, E, A, C, func, D(i, j), zeros(size(E, 1)));
+            [shortestPath, trash] = fastFindBestRoad(i, j, E, A, C, func, D(i, j), zeros(size(E, 1)));
             for z = 1 : (length(shortestPath) - 1)
                 T(shortestPath(z), shortestPath(z + 1)) = T(shortestPath(z), shortestPath(z + 1)) + D(i, j);
             end
@@ -51,7 +48,7 @@ while (epsilon > 1) && (iteration < 10)
     for i = 1 : size(D, 1) % составляем кратчайшие пути во взвешенном графе
         for j = 1 : size(D, 2)
             if D(i, j) ~=0
-                [shortestPath, trash] = Finc_best_road(i, j, E, A, C, func, D(i, j), T);
+                [shortestPath, trash] = fastFindBestRoad(i, j, E, A, C, func, D(i, j), T);
                 for z = 1 : (length(shortestPath) - 1)
                     Y(shortestPath(z), shortestPath(z + 1)) = Y(shortestPath(z), shortestPath(z + 1)) + D(i, j);
                 end
@@ -63,7 +60,7 @@ while (epsilon > 1) && (iteration < 10)
     % минимизации
     y = Y(:);
     d = y - x0;
-    G = get_function_G_for_optimize(A, C, int_func, x0, d, alpha);
+    G = getFunctionGForOptimize(A, C, int_func, x0, d, alpha);
     
     % минимизация функции G и нахождение нового ответа - x0
     alpha_fl = fminbnd(G, 0, 1);

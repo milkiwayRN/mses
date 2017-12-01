@@ -7,15 +7,15 @@
 % T - матрица потоков между вершинами, которые уже проходят по путям
 % (матрица Xij из условия)
 
-function [ path, cost ] = Find_best_road(r, s, E, A, C, func, corres, oldpath, T)
+function [ path, cost ] = slowFindBestRoad(r, s, E, A, C, func, corres, oldpath, T)
 numOfCols = size(E, 2);
 tcost = -1;
 tpath = [];
 cost = -1;
 ispath = 0; % индикатор, есть ли из этой вершины путь в s
 isunique = 0;
-%if length(oldpath)==1
-%    disp(['for r = ',num2str(r)]);
+%if length(oldpath) == 1
+%    disp(['for r = ', num2str(r)]);
 %end
 for k = 1 : numOfCols
     isunique = 1;
@@ -37,15 +37,15 @@ for k = 1 : numOfCols
             tcost = double(func(corres + T(r, k), A(r, k), C(r, k))); % вычисляем стоимость прохода по ребру (r, s)
             tpath = [s];
         else
-            [tpath, tcost] = Find_best_road(k, s, E, A, C, func, corres, [oldpath, k], T);
+            [tpath, tcost] = slowFindBestRoad(k, s, E, A, C, func, corres, [oldpath, k], T);
             if tcost == -1 % если не было пути из к в s - дальше можно и не продолжать :)
                 continue
             end
             tcost = tcost + double(func(corres + T(r, k), A(r, k), C(r, k))); % фактически - стоимость прохода по ребру (r, k) + стоимость кратчайшего пути из k в s
         end
-        %if length(oldpath)==1
+        %if length(oldpath) == 1
         %    disp(' K tpath')
-        %    disp([k,tpath]);
+        %    disp([k, tpath]);
         %    disp('tcost');         
         %    disp(tcost);
         %end
