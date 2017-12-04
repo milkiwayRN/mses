@@ -1,4 +1,4 @@
-function [] = main(A, C, D, E, epsilon, iteration, func)
+function T = main(A, C, D, E, eps, iter, func)
 
 T = zeros(size(E, 1));
 
@@ -19,7 +19,10 @@ int_func = int(func, x, 0, x);
 int_func(x, a, c) = int_func;
 x0 = T(:);
 
-while (epsilon > 1) && (iteration < 10) 
+epsilon = inf;
+iteration = 0;
+
+while (epsilon > eps) && (iteration < iter) 
     Y = zeros(size(E, 1));
     for i = 1 : size(D, 1) % составляем кратчайшие пути во взвешенном графе
         for j = 1 : size(D, 2)

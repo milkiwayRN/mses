@@ -1,9 +1,11 @@
-%--------traffic assignment----------
 clear all;
 
 syms x a c alpha;
 
-func(x, a, c) = a + (x / c)^4;
+func(x, a, c) = a + (x / c)^4; % весовая функция
+
+eps = 0.0001;
+iter = 10;
 
 A = [0, 0, 2, 3;
      1, 0, 2, 0;
@@ -25,5 +27,5 @@ E = [0, 0, 1, 1;
      0, 0, 0, 1;
      1, 1, 1, 0];
 
-~ = main(A, C, D, E, inf, 0, func);
+result = main(A, C, D, E, eps, iter, func)
 
