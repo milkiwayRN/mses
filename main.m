@@ -1,34 +1,12 @@
-%--------traffic assignment----------
-clear all;
+function [] = main(A, C, D, E, epsilon, iteration, func)
 
-syms x a c alpha;
-
-func(x, a, c) = a + (x / c)^4;
-A = [0, 0, 2, 3;
-     1, 0, 2, 0;
-     0, 0, 0, 1;
-     1, 2, 1, 0];
-C = [0, 0, 2, 3;
-     1, 0, 2, 0;
-     0, 0, 0, 1;
-     1, 2, 1, 0];
-D = [0, 40, 0, 0;
-     0, 0, 70, 0;
-     0, 80, 0, 0;
-     0, 0, 0, 0];
-E = [0, 0, 1, 1;
-     1, 0, 1, 0;
-     0, 0, 0, 1;
-     1, 1, 1, 0];
 T = zeros(size(E, 1));
-temppath = [];
-trash = 0;
 
-%first iteration - find x0
+% first iteration - find x0
 for i = 1 : size(D, 1)
     for j = 1 : size(D, 2)
         if D(i, j) ~=0
-            [shortestPath, trash] = fastFindBestRoad(i, j, E, A, C, func, D(i, j), zeros(size(E, 1)));
+            [shortestPath, ~] = fastFindBestRoad(i, j, E, A, C, func, D(i, j), zeros(size(E, 1)));
             for z = 1 : (length(shortestPath) - 1)
                 T(shortestPath(z), shortestPath(z + 1)) = T(shortestPath(z), shortestPath(z + 1)) + D(i, j);
             end
@@ -37,8 +15,6 @@ for i = 1 : size(D, 1)
 end
 % end of first iteration
 
-epsilon = inf;
-iteration = 0;
 int_func = int(func, x, 0, x);
 int_func(x, a, c) = int_func;
 x0 = T(:);
@@ -48,7 +24,7 @@ while (epsilon > 1) && (iteration < 10)
     for i = 1 : size(D, 1) % составляем кратчайшие пути во взвешенном графе
         for j = 1 : size(D, 2)
             if D(i, j) ~=0
-                [shortestPath, trash] = fastFindBestRoad(i, j, E, A, C, func, D(i, j), T);
+                [shortestPath, ~] = fastFindBestRoad(i, j, E, A, C, func, D(i, j), T);
                 for z = 1 : (length(shortestPath) - 1)
                     Y(shortestPath(z), shortestPath(z + 1)) = Y(shortestPath(z), shortestPath(z + 1)) + D(i, j);
                 end
@@ -69,5 +45,6 @@ while (epsilon > 1) && (iteration < 10)
     epsilon = norm(x0 - y);
     iteration = iteration + 1;
     T = reshape(x0, size(T, 1), size(T, 2));
+end
 end
 
